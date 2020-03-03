@@ -7,5 +7,33 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+library(janitor)
+library(readxl)
+library(reprex)
+library(gt)
+library(tidycensus)
+library(tidyverse)
+```
+
+```{r, echo=FALSE}
+x_2020 <- read_excel("class_enrollment_summary_by_term_2.25.20_0.xlsx",
+           skip = 3) %>%
+  clean_names() %>%
+  filter(! is.na(course_name))
+
+x_2019 <- read_excel("class_enrollment_summary_by_term_3.22.19_0.xlsx",
+           skip = 3) %>%
+  clean_names() %>%
+  filter(! is.na(course_name))
+
+x_2020
+
+x_2019
+
+z <- x_2020 %>% 
+  anti_join(x_2019, by = "course_id")
+
+z
 ```
 
