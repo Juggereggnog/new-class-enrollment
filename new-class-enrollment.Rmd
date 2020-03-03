@@ -25,7 +25,8 @@ x_2020 <- read_excel("class_enrollment_summary_by_term_2.25.20_0.xlsx",
 x_2019 <- read_excel("class_enrollment_summary_by_term_3.22.19_0.xlsx",
            skip = 3) %>%
   clean_names() %>%
-  filter(! is.na(course_name))
+  filter(! is.na(course_name)) %>% 
+  select(course_id)
 
 x_2020
 
@@ -35,5 +36,15 @@ z <- x_2020 %>%
   anti_join(x_2019, by = "course_id")
 
 z
+```
+
+```{r, echo=FALSE}
+biggest_classes <- z %>%
+  group_by(course_name) %>%
+  summarize(class_total = sum(total)) %>% 
+  arrange(desc(class_total)) %>% 
+  head(5)
+
+biggest_classes
 ```
 
